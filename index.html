@@ -3,21 +3,20 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Banques</title>
-  <!-- <link rel="stylesheet" href="style.css"> -->
+  <link rel="stylesheet" href="style.css">
   <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
 </head>
 <body id="bank">
   <form>
     <h2>Banque</h2>
     <fieldset id="banks">
-
-        <select name="drop_down" id="dropDownBanks">
+        <label>Banque</label>
+        <select name="bank" id="dropDownBanks">
             <option value="None" selected="Selected">Sélectionnez votre banque</option>
         </select>
     </fieldset>
 
     <fieldset id="fieldSelected">
-
     </fieldset>
   </form>
 
@@ -43,9 +42,10 @@ $('#dropDownBanks').on('change', function() {
           })
           $("#fieldSelected").append("</select><br />")
         } else {
-          $("#fieldSelected").append($('<label>'+ value.label +'</label><input type='+ value.type+' name ='+value.name+'></input><br />'));
+          $("#fieldSelected").append($('<label>'+ value.label +'</label><input type='+ value.type+' pattern='+value.regex+' name ='+value.name+'></input><br />'));
         }
       });
+      $("#fieldSelected").append($('<input type="submit">'))
   });
 });
   </script>
