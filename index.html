@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banques</title>
+  <!-- <link rel="stylesheet" href="style.css"> -->
+  <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+</head>
+<body id="bank">
+  <form>
+    <h2>Banque</h2>
+    <fieldset id="banks">
+
+        <select name="drop_down" id="dropDownBanks">
+            <option value="None" selected="Selected">Sélectionnez votre banque</option>
+        </select>
+    </fieldset>
+
+    <fieldset id="fieldSelected">
+
+    </fieldset>
+  </form>
+
+  <script>
+  $(document).ready(function() {
+    $("#fieldSelected").hide()
+  $.getJSON("https://budgea.biapi.pro/2.0/banks", function(obj) {
+      $.each(obj.banks, function(key, value) {
+          $("#dropDownBanks").append("<option value="+ value.id + " >" + value.name + "</option>");
+      });
+  });
+});
+$('#dropDownBanks').on('change', function() {
+  $("#fieldSelected").show()
+  $("#banks").hide()
+  var url = "https://budgea.biapi.pro/2.0/banks/"+ $(this).val() +"/fields"
+  $.getJSON(url, function(obj) {
+      $.each(obj.fields, function(key, value) {
+        if (value.type == "list") {
+          $("#fieldSelected").append("<label>"+ value.label +"</label><select id='listField'>")
+          $.each(value.values, function(key, filedValue) {
+            $("#listField").append("<option value="+ filedValue.value + " >" + filedValue.label + "</option></select>");
+          })
+          $("#fieldSelected").append("</select><br />")
+        } else {
+          $("#fieldSelected").append($('<label>'+ value.label +'</label><input type='+ value.type+' name ='+value.name+'></input><br />'));
+        }
+      });
+  });
+});
+  </script>
+</body>
+</html>
